@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TweetRequest extends BaseRequest {
+    /** if update id cannot be null**/
+    private String id;
     private String tweet;
 }
