@@ -3,13 +3,14 @@ package com.rnd.app.tweetwebflux.service.tweet;
 import com.alibaba.fastjson.JSON;
 import com.rnd.app.tweetwebflux.base.Base;
 import com.rnd.app.tweetwebflux.exception.TweetNotFoundException;
+import com.rnd.app.tweetwebflux.payload.LogRequest;
 import com.rnd.app.tweetwebflux.payload.TweetRequest;
 import com.rnd.app.tweetwebflux.payload.TweetResponse;
 import com.rnd.app.tweetwebflux.repository.TweetRepository;
+import com.rnd.app.tweetwebflux.service.log.LogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -18,8 +19,9 @@ public class UpdateTweetService implements Base<TweetResponse, TweetRequest> {
 
     @Autowired
     private TweetRepository tweetRepository;
+    @Autowired
+    private LogService logService;
 
-    @Transactional
     @Override
     public Mono<TweetResponse> execute(TweetRequest request) {
         log.info("request update tweets={}", JSON.toJSONString(request));
@@ -28,11 +30,16 @@ public class UpdateTweetService implements Base<TweetResponse, TweetRequest> {
                 .flatMap(tweet -> {
                     log.info("id={}",tweet.getId());
                     tweet.setText(request.getTweet());
-                    return tweetRepository.save(tweet)
-                            .map(tweetData -> TweetResponse.builder()
-                                    .id(tweetData.getId())
-                                    .tweet(tweetData.getText())
-                                    .createdAt(tweetData.getCreatedAt())
+                    return logService.execute(LogRequest.builder()
+                                    .logs(request)
+                                    .accountId(request.getId())
+                                    .status("UPDATED_TWEET")
+                            .build()).then(tweetRepository.save(tweet))
+                            .map(responseTweet -> TweetResponse
+                                    .builder()
+                                    .id(responseTweet.getId())
+                                    .tweet(responseTweet.getText())
+                                    .createdAt(responseTweet.getCreatedAt())
                                     .build());
                 });
     }

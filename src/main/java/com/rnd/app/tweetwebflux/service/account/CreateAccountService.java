@@ -6,6 +6,7 @@ import com.rnd.app.tweetwebflux.model.Account;
 import com.rnd.app.tweetwebflux.model.Role;
 import com.rnd.app.tweetwebflux.payload.AccountRequest;
 import com.rnd.app.tweetwebflux.payload.AccountResponse;
+import com.rnd.app.tweetwebflux.payload.LogRequest;
 import com.rnd.app.tweetwebflux.repository.AccountRepository;
 import com.rnd.app.tweetwebflux.repository.RoleRepository;
 import com.rnd.app.tweetwebflux.service.log.LogService;
@@ -35,7 +36,11 @@ public class CreateAccountService implements Base<AccountResponse, AccountReques
     public Mono<AccountResponse> execute(AccountRequest request) {
         log.info("create account={}", JSON.toJSONString(request));
         log.info("choose roles={}",request.getRoles());
-        return logService.execute(request)
+        return logService.execute(LogRequest.builder()
+                        .logs(request)
+                        .accountId(request.getId())
+                        .status(currentStatus("CREATED_ACCOUNT"))
+                        .build())
                 .then(accountRepository.save(accountConvertDtoToEntity(request))
                 .flatMap(account -> accountRepository.findById(account.getId())))
                 .map(this::accountEntityConvertToDto);
