@@ -14,15 +14,12 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "tweets")
-public class Tweet extends BaseResponse {
-
+@Document(collection = "log_activity")
+public class LogActivity extends BaseResponse {
     @Id
     private String id;
-    private String text;
-    /** refer to account id **/
     private String accountId;
-    /** created at auto generate **/
-    private Date createdAt = new Date();
-    private Integer deleted;
+    private String logs;
+    private Date logDate;
+    private String status;
 }

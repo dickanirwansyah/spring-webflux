@@ -1,4 +1,4 @@
-package com.rnd.app.tweetwebflux.service;
+package com.rnd.app.tweetwebflux.service.tweet;
 
 import com.alibaba.fastjson.JSON;
 import com.rnd.app.tweetwebflux.base.Base;

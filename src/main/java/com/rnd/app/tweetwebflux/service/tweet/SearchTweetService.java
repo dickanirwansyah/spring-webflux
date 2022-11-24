@@ -1,4 +1,4 @@
-package com.rnd.app.tweetwebflux.service;
+package com.rnd.app.tweetwebflux.service.tweet;
 
 import com.rnd.app.tweetwebflux.base.BasePageable;
 import com.rnd.app.tweetwebflux.base.SearchPageRequest;

@@ -8,21 +8,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "tweets")
-public class Tweet extends BaseResponse {
-
+@Document(collection = "role")
+public class Role extends BaseResponse {
     @Id
     private String id;
-    private String text;
-    /** refer to account id **/
-    private String accountId;
-    /** created at auto generate **/
-    private Date createdAt = new Date();
+    private String name;
     private Integer deleted;
 }
