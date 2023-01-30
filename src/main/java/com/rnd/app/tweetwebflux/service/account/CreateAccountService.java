@@ -46,7 +46,6 @@ public class CreateAccountService implements Base<AccountResponse, AccountReques
                 .map(this::accountEntityConvertToDto);
     }
 
-
     private String currentStatus(String status){
         return Arrays.stream(Constant.STATUS)
                 .filter(data -> data.equals(status)).findFirst().get();

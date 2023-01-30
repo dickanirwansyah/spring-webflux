@@ -22,4 +22,5 @@ public class LogActivity extends BaseResponse {
     private String logs;
     private Date logDate;
     private String status;
+
 }
